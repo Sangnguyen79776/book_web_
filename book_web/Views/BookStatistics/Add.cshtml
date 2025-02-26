@@ -1,0 +1,40 @@
+﻿@model BookStatistics
+@* @{ *@
+@*     ViewData["Title"] = "Add Book Statistic"; *@
+@* } *@
+
+<h1>Add Book Statistic</h1>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="BookId">Book</label>
+        <select asp-for="BookId" class="form-control" asp-items="ViewBag.Books">
+            <option value="">-- Select Book --</option>
+        </select>
+        <span asp-validation-for="BookId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Views">Views</label>
+        <input asp-for="Views" class="form-control" type="number" min="0" />
+        <span asp-validation-for="Views" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Sales">Sales</label>
+        <input asp-for="Sales" class="form-control" type="number" min="0" />
+        <span asp-validation-for="Sales" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Date">Date</label>
+        <input asp-for="Date" class="form-control" type="date" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Statistic</button>
+</form>
+
+<!-- Link to go back to the list of statistics -->
+<a href="@Url.Action("Index")" class="btn btn-secondary mt-3">Back to Statistics List</a>
+

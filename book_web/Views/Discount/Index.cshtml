@@ -1,0 +1,37 @@
+﻿@model IEnumerable<book_web.Models.Discount>
+
+<h1>Discounts</h1>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Create New Discount</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Discount (%)</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Minimum Amount Spent</th>
+            <th>Minimum Number of People</th>
+            <th>Is Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var discount in Model)
+        {
+            <tr>
+                <td>@discount.DiscountPercentage</td>
+                <td>@discount.StartDate.ToShortDateString()</td>
+                <td>@discount.EndDate.ToShortDateString()</td>
+                <td>@discount.MinimumAmountSpent</td>
+                <td>@discount.MinimumNumberOfPeople</td>
+                <td>@discount.IsActive ? "Yes" : "No"</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = discount.Id })" class="btn btn-warning">Edit</a>
+                    <a href="@Url.Action("Delete", new { id = discount.Id })" class="btn btn-warning">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

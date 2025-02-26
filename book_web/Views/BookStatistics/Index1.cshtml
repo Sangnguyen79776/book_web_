@@ -1,0 +1,104 @@
+﻿@model BookStatisticViewModel
+
+@{
+    ViewData["Title"] = "Book Statistics";
+}
+
+<h1>Book Statistics</h1>
+
+<!-- Add Book Statistic Link -->
+<a href="@Url.Action("Add", "BookStatistics")" class="btn btn-primary mb-3">Add New Book Statistic</a>
+
+<!-- Chart container -->
+<canvas id="myChart" width="400" height="200"></canvas>
+
+<!-- Table displaying Book Statistics -->
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Book Title</th>
+            <th>Views</th>
+            <th>Sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Labels.Length; i++)
+        {
+            <tr>
+                <td>@Model.Labels[i]</td> <!-- Display Date -->
+                <td>@Model.Book[i].BookTitle</td>
+                <td>@Model.Views[i]</td>  <!-- Display Views -->
+                <td>@Model.Sales[i]</td>  <!-- Display Sales -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- SignalR Script to handle real-time updates -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.10/signalr.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Set up SignalR connection
+    var connection = new signalR.HubConnectionBuilder().withUrl("/statisticsHub").build();
+
+    // Receive real-time statistics data from the server
+    connection.on("ReceiveStatisticsData", function (chartData) {
+        // Update the chart with new data
+        chartData = JSON.parse(chartData);  // Parse the JSON string to object
+
+        myChart.data.labels = chartData.labels; // Update the labels (dates)
+     1
+        myChart.data.datasets[0].data = chartData.views; // Update the views data
+        myChart.data.datasets[1].data = chartData.sales; // Update the sales data
+        myChart.update(); // Redraw the chart
+    });
+    
+    // Start the SignalR connection
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    // Initialize the chart using the data passed from the controller
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar', // Choose chart type (bar chart)
+        data: {
+          
+            labels: @Html.Raw(Json.Serialize(Model.Labels)),  // Get dates from the model
+            datasets: [{
+                label: 'Views',
+                data: @Html.Raw(Json.Serialize(Model.Views)),// Get views data from the model
+               
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: false,
+                tension: 0.1
+            },
+          
+            {
+                label: 'Sales',
+                data: @Html.Raw(Json.Serialize(Model.Sales)),  // Get sales data from the model
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: false,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+

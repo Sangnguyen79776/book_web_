@@ -1,0 +1,19 @@
+﻿@model List<TeamMember>
+
+<h2>Meet Our Team</h2>
+
+<div class="team">
+    @foreach (var member in Model)
+    {
+        <div class="team-member">
+            @if (!string.IsNullOrEmpty(member.ImageUrl))
+            {
+                <img src="@member.ImageUrl" alt="@member.Name" class="team-member-image" />
+            }
+            <h3>@member.Name</h3>
+            <p><strong>@member.Role</strong></p>
+            <p>@member.Bio</p>
+        </div>
+    }
+</div>
+

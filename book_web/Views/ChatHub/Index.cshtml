@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Live Chat";
+}
+
+<h2>Live Chat Support</h2>
+
+<div id="chatBox">
+    <ul id="messagesList"></ul>
+</div>
+
+<input type="text" id="userInput" placeholder="Enter your name" />
+<textarea id="messageInput" placeholder="Enter your message"></textarea>
+<button onclick="sendMessage()">Send Message</button>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signalr/3.1.12/signalr.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub") .ConfigureLogging(logging => {
+        logging.SetMinimumLevel(LogLevel.Information);
+        logging.AddConsole();  }).Build();
+
+        // Start the connection to the chat hub
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        // Receive a message from the server and display it in the chat box
+        connection.on("ReceiveMessage", function (user, message) {
+            var li = document.createElement("li");
+            li.textContent = `${user}: ${message}`;
+            document.getElementById("messagesList").appendChild(li);
+        });
+
+        // Send a message to the server
+        function sendMessage() {
+            var user = document.getElementById("userInput").value;
+            var message = document.getElementById("messageInput").value;
+
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+
+            // Clear the message input after sending the message
+            document.getElementById("messageInput").value = "";
+        }
+    </script>
+connection.start()
+    .then(() => {
+        console.log("Connection established. Connection ID: ", connection.connectionId);
+
+        // Example: Send message to a specific client by connection ID
+        connection.invoke("SendMessageToClient", "some-connection-id", "Hello!")
+            .catch(err => console.error(err.toString()));
+    })
+    .catch(err => console.error("Connection failed: ", err.toString()));
+}
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

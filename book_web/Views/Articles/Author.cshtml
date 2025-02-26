@@ -1,0 +1,17 @@
+﻿@model Author
+
+<h2>@Model.Name</h2>
+<p>@Model.Biography</p>
+<img src="@Model.ImageUrl" alt="@Model.Name's image" />
+
+<h3>Articles by @Model.Name</h3>
+<div>
+    @foreach (var article in Model.Articles)
+    {
+        <div>
+            <h4>@article.Title</h4>
+            <p>@article.Content.Substring(0, 100)...</p>
+            <a href="@Url.Action("Details", "Articles", new { id = article.Id })">Read More</a>
+        </div>
+    }
+</div>

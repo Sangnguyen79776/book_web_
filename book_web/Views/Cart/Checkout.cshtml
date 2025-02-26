@@ -1,0 +1,26 @@
+﻿@model CheckoutViewModel
+
+<h2>Checkout</h2>
+
+<form asp-action="SubmitOrder" method="post">
+    <div class="form-group">
+        <label for="CustomerName">Customer Name</label>
+        <input type="text" id="CustomerName" name="CustomerName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="ShippingAddress">ShippingAddress</label>
+        <input type="text" id="Address" name="ShippingAddress" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="PaymentMethod">Payment Method</label>
+        <select>
+            <option value="cash">Cash</option>
+            <option value="creditCard">Credit Card</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="TotalAmount">Total Amount: @Model.TotalAmount</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Complete Order</button>
+</form>
+

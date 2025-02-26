@@ -1,0 +1,22 @@
+﻿@model List<Event>
+
+<h2>Upcoming Events</h2>
+
+<div>
+    @foreach (var eventItem in Model)
+    {
+            <div class="event-item">
+                <h3>@eventItem.Title</h3>
+                <p>@eventItem.Description</p>
+                <p><strong>Date:</strong> @eventItem.Date.ToString("MMMM dd, yyyy hh:mm tt")</p>
+                <p><strong>Location:</strong> @eventItem.Location</p>
+
+            @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+            {
+                        <img src="@eventItem.ImageUrl" alt="@eventItem.Title" />
+            }
+
+                <hr />
+            </div>
+    }
+</div>

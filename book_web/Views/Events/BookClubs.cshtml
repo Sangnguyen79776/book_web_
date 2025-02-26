@@ -1,0 +1,18 @@
+﻿@model List<BookClub>
+
+<h2>Join Our Book Clubs</h2>
+
+<div>
+    @foreach (var club in Model)
+    {
+        <div class="book-club-item">
+            <h3>@club.Name</h3>
+            <p>@club.Description</p>
+            <p><strong>Next Meeting:</strong> @club.MeetingDate.ToString("MMMM dd, yyyy hh:mm tt")</p>
+            <p><strong>Location:</strong> @club.Location</p>
+            <p><strong>How to Join:</strong> @club.JoinInstructions</p>
+            <hr />
+        </div>
+    }
+</div>
+

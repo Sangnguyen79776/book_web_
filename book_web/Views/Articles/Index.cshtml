@@ -1,0 +1,28 @@
+﻿@model List<Article>
+
+<h2>Articles & Reviews</h2>
+<p>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    }
+
+</p>
+<div>
+    <a href="@Url.Action("Index", "Articles", new { category = "Literature" })">Literature</a>
+    <a href="@Url.Action("Index", "Articles", new { category = "Interview" })">Interviews</a>
+    <a href="@Url.Action("Index", "Articles", new { category = "Review" })">Reviews</a>
+</div>
+
+<div>
+    @foreach (var article in Model)
+    {
+        <div>
+            <h3>@article.Title</h3>
+            <p>@article.Content.Substring(0, 200)...</p>
+            <p>Posted on @article.DatePosted.ToShortDateString()</p>
+            <a href="@Url.Action("Details", "Articles", new { id = article.Id })">Read More</a>
+        </div>
+    }
+</div>
+

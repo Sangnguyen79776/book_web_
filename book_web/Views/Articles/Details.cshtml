@@ -1,0 +1,18 @@
+﻿@model ArticleDetailsViewModel
+
+<h2>@Model.Article.Title</h2>
+<p>@Model.Article.Content</p>
+<p>By @Model.Article.Author</p>
+
+<h3>Reviews</h3>
+<div>
+    @foreach (var review in Model.Reviews)
+    {
+        <div>
+            <strong>@review.Reviewer</strong> rated @review.Rating/5
+            <p>@review.Content</p>
+            <p>Posted on @review.DatePosted.ToShortDateString()</p>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,106 @@
+﻿@model dynamic 
+@* <!-- The model is dynamically passed for chart data --> *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>Book Statistics - Views & Sales</h1>
+    
+    <!-- Canvas for Chart.js -->
+    <a href="@Url.Action("Add", "BookStatistics")" class="btn btn-primary mb-3">Add New Book Statistic</a>
+
+    <!-- Chart container -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <!-- Table displaying Book Statistics -->
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Book Title</th>
+                <th>Views</th>
+                <th>Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in Model)
+            {
+                <tr>
+                    <td>@stat.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@stat.Book.Title</td>
+                    <td>@stat.Views</td>
+                    <td>@stat.Sales</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.10/signalr.js"></script>
+    <script>
+        // Create a connection to the SignalR hub
+        var connection = new signalR.HubConnectionBuilder().withUrl("/statisticsHub").build();
+
+        // Receive updated data from the SignalR hub
+        connection.on("ReceiveStatisticsData", function(chartData) {
+            chartData = JSON.parse(chartData);
+            myChart.data.labels = chartData.labels;
+            myChart.data.datasets[0].data = chartData.views;
+            myChart.data.datasets[1].data = chartData.sales;
+            myChart.update();
+        });
+
+        // Start the connection
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+    <script>
+        // Pass data from controller to JavaScript
+                var chartData =@Html.Raw(Json.Serialize(Model));
+        );
+
+        // Set up the chart data
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',  // Type of chart: line chart
+            data: {
+                labels: chartData.labels,  // Dates
+                datasets: [{
+                    label: 'Views',
+                    data: chartData.views,  // Views
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'Sales',
+                    data: chartData.sales,  // Sales
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+   
+</body>
+</html>

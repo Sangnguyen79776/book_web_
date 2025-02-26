@@ -1,0 +1,16 @@
+﻿@model Order
+
+<h2>Order Confirmation</h2>
+
+<p>Thank you for your order!</p>
+<p>Order ID: @Model.OrderId</p>
+<p>Order date: @Model.OrderDate</p>
+
+<h3>Order Items</h3>
+<ul>
+    @foreach (var item in Model.OrderItems)
+    {
+        <li>This is your bill : @item.Quantity  - @item.Price</li>
+    }
+</ul>
+

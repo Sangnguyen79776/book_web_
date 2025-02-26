@@ -1,0 +1,31 @@
+﻿@model BookRecommendationsViewModel
+
+<h2>Best Sellers</h2>
+<ul>
+    @foreach (var book in Model.BestSellers)
+    {
+        <li>
+            <strong>@book.BookTitle</strong> by @book.Author (Sales: @book.SalesCount)
+        </li>
+    }
+</ul>
+
+<h2>What's New</h2>
+<ul>
+    @foreach (var book in Model.NewReleases)
+    {
+        <li>
+            <strong>@book.BookTitle</strong> by @book.Author (Added: @book.DateAdded.ToShortDateString())
+        </li>
+    }
+</ul>
+
+<h2>Staff Picks</h2>
+<ul>
+    @foreach (var book in Model.StaffPicks)
+    {
+        <li>
+            <strong>@book.BookTitle</strong> by @book.Author (Rating: @book.Rating)
+        </li>
+    }
+</ul>
