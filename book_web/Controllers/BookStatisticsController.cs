@@ -28,7 +28,7 @@ namespace book_web.Controllers
             // Construct the BookStatisticViewModel
             var viewModel = new BookStatisticViewModel
             {
-                //Title =statistics.Select(s=>s.Book.BookTitle).ToList(),
+                
                 Book = statistics.Select(statistics => statistics.Book).ToList(),
                 Labels = statistics.Select(s => s.Date.ToString("yyyy-MM-dd")).ToArray(),  // Extract dates
                 Views = statistics.Select(s => s.Views).ToArray(),  // Extract views data
@@ -69,7 +69,8 @@ namespace book_web.Controllers
             var books = await _context.Book.ToListAsync();
 
             // Pass the list of books to the view via ViewData
-            ViewData["Books"] = books;
+            //ViewData["Books"] = books;
+            ViewBag.Books = new SelectList(books, "BookId", "BookTitle");
 
             return View();
         }
@@ -78,6 +79,50 @@ namespace book_web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(BookStatistics bookStatistic)
         {
+
+            //    if (ModelState.IsValid)
+            //    {
+            //        // Ensure the selected BookId exists in the database
+            //        var book = await _context.Book.FindAsync(bookStatistic.BookId);
+            //        if (book == null)
+            //        {
+            //            // Handle the error if the book is not found
+            //            ModelState.AddModelError("BookId", "Selected book does not exist.");
+            //            ViewBag.Books = new SelectList(_context.Book, "BookId", "BookTitle", bookStatistic.BookId);
+            //            return View(bookStatistic);
+            //        }
+
+            //        // Add the BookStatistic to the database
+            //        _context.BookStatistics.Add(bookStatistic);
+            //        await _context.SaveChangesAsync();
+
+            //        // Send the updated statistics to all connected clients via SignalR
+            //        var statistics = await _context.BookStatistics
+            //            .Include(bs => bs.Book)
+            //            .OrderByDescending(bs => bs.Date)
+            //            .Take(30)  // Example: Get the latest 30 statistics records
+            //            .ToListAsync();
+
+            //        var viewModel = new BookStatisticViewModel
+            //        {
+            //            Book = statistics.Select(s => s.Book).ToList(),
+            //            Labels = statistics.Select(s => s.Date.ToString("yyyy-MM-dd")).ToArray(),
+            //            Views = statistics.Select(s => s.Views).ToArray(),
+            //            Sales = statistics.Select(s => s.Sales).ToArray()
+            //        };
+
+            //        // Send updated chart data to all clients via SignalR
+            //        await _hubContext.Clients.All.SendAsync("ReceiveStatisticsData", viewModel);
+
+            //        // Redirect to the Index page (or wherever you want after submission)
+            //        return RedirectToAction(nameof(Index));
+            //    }
+
+            //    // If model state is invalid, reload the form with the list of books
+            //    ViewBag.Books = new SelectList(_context.Book, "BookId", "BookTitle", bookStatistic.BookId);
+            //    return View(bookStatistic);
+            //}
+
             if (ModelState.IsValid)
             {
                 // Add the BookStatistic to the database
@@ -93,6 +138,7 @@ namespace book_web.Controllers
 
                 var viewModel = new BookStatisticViewModel
                 {
+                    Book = statistics.Select(s => s.Book).ToList(),
                     Labels = statistics.Select(s => s.Date.ToString("yyyy-MM-dd")).ToArray(),
                     Views = statistics.Select(s => s.Views).ToArray(),
                     Sales = statistics.Select(s => s.Sales).ToArray()
@@ -101,7 +147,10 @@ namespace book_web.Controllers
 
                 // Send updated chart data to all clients via SignalR
                 await _hubContext.Clients.All.SendAsync("ReceiveStatisticsData", viewModel);
+                //ViewBag.Books = new SelectList(_context.Book, "BookId", "BookTitle", bookStatistic.BookId);
 
+                //// Return the view with the updated statistics and selected book
+                //return View("Add", viewModel);  // You can return the view with the `viewModel` for chart data
                 // Redirect to the Index page (or wherever you want after submission)
                 return RedirectToAction(nameof(Index));
                 //if (ModelState.IsValid)
@@ -129,9 +178,10 @@ namespace book_web.Controllers
                 //return View(bookStatistic);
             }
 
-            // If model state is not valid, reload the form
+            //// If model state is not valid, reload the form
             ViewBag.Books = new SelectList(_context.Book, "BookId", "BookTitle", bookStatistic.BookId);
             return View(bookStatistic);
+
         }
     }
 

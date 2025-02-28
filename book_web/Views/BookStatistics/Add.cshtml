@@ -6,12 +6,17 @@
 <h1>Add Book Statistic</h1>
 
 <form asp-action="Add" method="post">
+    @* <div class="form-group"> *@
+    @*     <label asp-for="BookId">Book</label> *@
+    @*     <select asp-for="BookId" class="form-control" asp-items="ViewBag.Books"> *@
+    @*         <option value="">-- Select Book --</option> *@
+    @*     </select> *@
+    @*     <span asp-validation-for="BookId" class="text-danger"></span> *@
+    @* </div> *@
     <div class="form-group">
-        <label asp-for="BookId">Book</label>
-        <select asp-for="BookId" class="form-control" asp-items="ViewBag.Books">
-            <option value="">-- Select Book --</option>
-        </select>
-        <span asp-validation-for="BookId" class="text-danger"></span>
+        <label for="BookId">Book</label>
+        @Html.DropDownListFor(model => model.BookId, (SelectList)ViewBag.Books, "Select a Book", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BookId, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
@@ -36,5 +41,5 @@
 </form>
 
 <!-- Link to go back to the list of statistics -->
-<a href="@Url.Action("Index")" class="btn btn-secondary mt-3">Back to Statistics List</a>
+<a href="@Url.Action("Index1")" class="btn btn-secondary mt-3">Back to Statistics List</a>
 
