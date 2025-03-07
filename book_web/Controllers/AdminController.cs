@@ -17,13 +17,15 @@ namespace book_web.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly Book_webContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(UserManager<IdentityUser> userManager, Book_webContext dbContext)
+        public AdminController(UserManager<IdentityUser> userManager, Book_webContext dbContext,RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _context = dbContext;
+            _roleManager = roleManager;
         }
-
+     
         public async Task<IActionResult> UserList()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -41,10 +43,57 @@ namespace book_web.Controllers
                     Roles = roles.ToList(),
                     IsBlocked = isBlocked
                 });
+                ViewData["Roles"] = roles;
             }
             return View(userList);
         }
+        public async Task<IActionResult> AssignRoleToUser(string userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"User with ID {userId} not found.");
+            }
 
+            // Check if the role exists
+            var roleExist = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                return NotFound($"Role {roleName} does not exist.");
+            }
+
+            // Add role to user
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return Ok($"User with ID {userId} has been assigned the role {roleName}.");
+            }
+            else
+            {
+                return BadRequest("Error assigning role to user.");
+            }
+        }
+        public async Task<IActionResult> RemoveRoleFromUser(string userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"User with ID {userId} not found.");
+            }
+
+            // Remove role from user
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return Ok($"User with ID {userId} has been removed from the role {roleName}.");
+            }
+            else
+            {
+                return BadRequest("Error removing role from user.");
+            }
+        }
         [HttpGet]
         public async Task<IActionResult> ResetPass(string id)
         {

@@ -24,6 +24,8 @@ namespace book_web.Models
         public bool IsLimitedEdition { get; set; }
         public DateTime PublishedDate { get; set; }
         public DateTime LastUpdated { get; set; }
+        public int LikeCount {  get; set; }
+        public int DislikeCount { get; set; }
        
     }
 }

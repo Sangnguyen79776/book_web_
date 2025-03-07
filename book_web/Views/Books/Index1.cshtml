@@ -79,7 +79,16 @@
                 @* <li>Is Limited Edition: @Html.DisplayFor(modelItem => i.IsLimitedEdition)</li> *@
                 @* <li>Published Date: @Html.DisplayFor(modelItem => i.PublishedDate)</li> *@
                 @* <li>Last Updated: @Html.DisplayFor(modelItem => i.LastUpdated)</li> *@
-           
+                        <li>Book Likes Count :@Html.DisplayFor(modelItem => i.LikeCount)</li>
+                        <form method="post" action="@Url.Action("LikeBook", "Books")">
+                            <input type="hidden" name="bookId" value="@i.BookId" />
+                            <button type="submit">Like</button>
+                        </form>
+                        <li>Book Dislikes Count :@Html.DisplayFor(modelItem => i.DislikeCount)</li>
+                        <form method="post" action="@Url.Action("DislikeBook", "Books")">
+                            <input type="hidden" name="bookId" value="@i.BookId" />
+                            <button type="submit">Dislike</button>
+                        </form>
                 <li>More details for books:<a class="btn btn-info" asp-action="Details" asp-route-id="@i.BookId">Read More</a></li>
             </ul>
         </div>

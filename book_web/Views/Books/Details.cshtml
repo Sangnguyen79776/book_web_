@@ -92,7 +92,14 @@
 
                 <a asp-action="Index"> Back to List</a>
         </div>
-      
+            @if (!string.IsNullOrEmpty(Model.BookCover) && System.IO.File.Exists(Model.BookCover))
+            {
+                <a href="@Url.Action("DownloadZipFile", "Books", new { id = Model.BookId })" class="btn btn-success">Download Book ZIP</a>
+            }
+            else
+            {
+                <p>The ZIP file is not available yet.</p>
+            }
         }
         else
         {

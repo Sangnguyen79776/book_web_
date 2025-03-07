@@ -40,6 +40,7 @@ namespace book_web.Data
         public DbSet<BookViewModel> BookViewModel { get; set; }
         public DbSet<ArticleDetailsViewModel> ArticleDetailsViewModel { get; set; }
         public DbSet<Discount> Discount {  get; set; }
+        public DbSet<UserBookReaction> UserBookReactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -270,7 +271,12 @@ namespace book_web.Data
                 {
                     GenreId = 3,
                     GenreName = "Novel"
-                }
+                },
+                  new Genre
+                  {
+                      GenreId = 4,
+                      GenreName = "Love Story"
+                  }
              );
         }
 
@@ -292,6 +298,8 @@ namespace book_web.Data
                     IsLimitedEdition = false,
                     PublishedDate = DateTime.Now.AddYears(-7),   
                     LastUpdated = DateTime.Now,
+                    LikeCount = 210,
+                    DislikeCount= 50,
                 },
                 new Book
                 {
@@ -308,7 +316,8 @@ namespace book_web.Data
                     IsLimitedEdition = false,
                     PublishedDate = DateTime.Now.AddYears(-5),
                     LastUpdated = DateTime.Now,
-
+                    LikeCount = 650,
+                    DislikeCount= 70,
 
                 },
                 new Book
@@ -327,7 +336,47 @@ namespace book_web.Data
                     IsLimitedEdition = true,
                     PublishedDate = DateTime.Now.AddYears(-6),
                     LastUpdated = DateTime.Now,
-                }
+                    LikeCount=1750,
+                    DislikeCount=80,
+                },
+                  new Book
+                  {
+                      BookId = 4,
+                      BookTitle = "Programming with C++",
+                      BookPrice = 10.55,
+
+                      BookCover = "https://th.bing.com/th/id/OIP.UdyFxJlC_TWtaYsqGMWwwQHaKc?w=196&h=276&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+                      Author = "Li Zheng",
+                      Rating = 8.6,
+                      SalesCount = 685,
+                      StockQuantity = 135,
+                      GenreId = 1,
+                      DateAdded = DateTime.Now.AddDays(-2),
+                      IsLimitedEdition = false,
+                      PublishedDate = DateTime.Now.AddYears(-6),
+                      LastUpdated = DateTime.Now,
+                      LikeCount= 500,
+                      DislikeCount=35,
+                  },
+                   new Book
+                   {
+                       BookId = 5,
+                       BookTitle = "A novel about true love ",
+                       BookPrice = 12.75,
+
+                       BookCover = "https://th.bing.com/th/id/OIP.fWcVJEURX5e9M-29zpkaZQHaLR?w=196&h=299&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+                       Author = "Karen Kingsbury",
+                       Rating = 9.0,
+                       SalesCount = 1205,
+                       StockQuantity =50,
+                       GenreId = 4,
+                       DateAdded = DateTime.Now.AddDays(-2),
+                       IsLimitedEdition = false,
+                       PublishedDate = DateTime.Now.AddYears(-3),
+                       LastUpdated = DateTime.Now,
+                       LikeCount = 320,
+                       DislikeCount=20,
+                   }
              );
         }
     }

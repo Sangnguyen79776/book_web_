@@ -6,6 +6,9 @@ using book_web.Services;
 using book_web.Dependency_Injection;
 using book_web.Models;
 using SendGrid.Helpers.Mail;
+using Google;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNet.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

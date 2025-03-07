@@ -1,5 +1,11 @@
-﻿@model List<UserViewModel>
+﻿@model IEnumerable<book_web.Models.UserViewModel>
+<head>
+    <link rel="stylesheet" href="~/css/button_admin.css"/>
+</head>
+@{
 
+    var avaiableroleslist = ViewData["Roles"] as List<string>;
+}
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success">
@@ -23,6 +29,7 @@
             <th>Email</th>
             <th>Role</th>
             <th>Actions</th>
+            <th>Set up a roles </th>
         </tr>
     </thead>
     @{
@@ -41,8 +48,8 @@
                         if (!user.Roles.Contains("Admin"))
                         {
                             <a asp-action="ResetPass" asp-route-id="@user.Id" type="submit" class="btn btn-warning">Reset Password</a>
-
-                            @if (!user.IsBlocked)
+                          
+                           @if (!user.IsBlocked)
                             {
                                <a asp-action="BlockUser" asp-route-id="@user.Id" type="submit" class="btn btn-danger">Block User</a>
                             }
@@ -51,8 +58,20 @@
                                <a asp-action="UnblockUser" asp-route-id="@user.Id" type="submit" class="btn btn-primary">Unblock User</a>
                             }
                         }
+                 
+                    <td>
+                            @foreach (var role in avaiableroleslist) 
+                    {
+                               <a class="link-button" href="@Url.Action("AssignRoleToUser", new { userId = user.Id,roleName = "Admin" })">Assign Admin role</a>
+                               <a class="link-button" href="@Url.Action("AssignRoleToUser", new { userId = user.Id,roleName = role })">Assign @role</a>
+                            <a class="bg-danger" href="@Url.Action("RemoveRoleFromUser", new { userId = user.Id,roleName = "Admin" })">Remove Admin role</a>
+                               <a class="bg-danger" href="@Url.Action("RemoveRoleFromUser", new { userId = user.Id, roleName =role })">Remove @role </a>
                     }
-                </td>
+                     </td>
+                               
+                    }
+                   </td>
+               
             </tr>
             counter++;
         }

@@ -11,8 +11,8 @@ using book_web.Data;
 namespace book_web.Migrations
 {
     [DbContext(typeof(Book_webContext))]
-    [Migration("20250225032030_new_migr")]
-    partial class new_migr
+    [Migration("20250307095437_new_db_test_mig")]
+    partial class new_db_test_mig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,15 +151,15 @@ namespace book_web.Migrations
                         {
                             Id = "admin-account",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b455dda6-cb1b-430c-8bd8-31796ac3a0b0",
+                            ConcurrencyStamp = "80d762da-441d-4018-bcea-1d1ad84a54c1",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOHIfnkoh9TWAQ/nuyXuHFzDksln3zS6tyi9pyunEoQ39K5Ae0coJoKTadp7sjrNsw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI4Fk8owLlJpOA3Z5VMuptgPqmMlIYQM+QPz7QgFZfwdBJAmZ07xS08yozSxyvoNiQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8c66e93c-4028-4f77-b0e9-d8d5e49659db",
+                            SecurityStamp = "3cdb987c-ab9f-4877-981a-6d190ade2f37",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         },
@@ -167,15 +167,15 @@ namespace book_web.Migrations
                         {
                             Id = "reader-account",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41fd2603-48c5-4fb8-bfec-9e667e0fec83",
+                            ConcurrencyStamp = "0fc30b5e-a03b-4516-80a3-095bdb392819",
                             Email = "reader@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "READER@GMAIL.COM",
                             NormalizedUserName = "READER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECo2uw83bLuSL+czRQ/xt4wVaoAkwBVNudTZHg/JgjvKvxWwTZ6rCnK0un81c+2/Jg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGR6JL8OrI+zbNPiG2CfeyqbpUI6PPGKX45kXWKqOADAxZjPMTEk0eAXRJzEBkNm9A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0c3a3cd8-d652-40ad-89e4-a85d40783632",
+                            SecurityStamp = "1d779355-1086-4d51-8171-6ad8bb135a01",
                             TwoFactorEnabled = false,
                             UserName = "reader@gmail.com"
                         });
@@ -391,7 +391,6 @@ namespace book_web.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("BookCover")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("BookPrice")
@@ -405,6 +404,9 @@ namespace book_web.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("GenreId")
                         .HasColumnType("INTEGER");
 
@@ -413,6 +415,9 @@ namespace book_web.Migrations
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("TEXT");
@@ -440,11 +445,13 @@ namespace book_web.Migrations
                             BookCover = "https://images-na.ssl-images-amazon.com/images/I/51E2055ZGUL.jpg",
                             BookPrice = 12.34,
                             BookTitle = "Clean Code",
-                            DateAdded = new DateTime(2024, 9, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4223),
+                            DateAdded = new DateTime(2024, 10, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1006),
+                            DislikeCount = 50,
                             GenreId = 1,
                             IsLimitedEdition = false,
-                            LastUpdated = new DateTime(2025, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4249),
-                            PublishedDate = new DateTime(2018, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4246),
+                            LastUpdated = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1035),
+                            LikeCount = 210,
+                            PublishedDate = new DateTime(2018, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1029),
                             Rating = 7.5999999999999996,
                             SalesCount = 50,
                             StockQuantity = 250
@@ -456,11 +463,13 @@ namespace book_web.Migrations
                             BookCover = "https://m.media-amazon.com/images/I/91nJdrcNBtL._AC_UF1000,1000_QL80_.jpg",
                             BookPrice = 9.9900000000000002,
                             BookTitle = "The Mindfulness Journal",
-                            DateAdded = new DateTime(2024, 7, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4251),
+                            DateAdded = new DateTime(2024, 8, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1037),
+                            DislikeCount = 70,
                             GenreId = 2,
                             IsLimitedEdition = false,
-                            LastUpdated = new DateTime(2025, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4253),
-                            PublishedDate = new DateTime(2020, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4252),
+                            LastUpdated = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1039),
+                            LikeCount = 650,
+                            PublishedDate = new DateTime(2020, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1038),
                             Rating = 8.5999999999999996,
                             SalesCount = 50,
                             StockQuantity = 175
@@ -472,14 +481,52 @@ namespace book_web.Migrations
                             BookCover = "https://nhasachphuongnam.com/images/detailed/160/81YOuOGFCJL.jpg",
                             BookPrice = 6.7800000000000002,
                             BookTitle = "Harry Porter",
-                            DateAdded = new DateTime(2024, 6, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4254),
+                            DateAdded = new DateTime(2024, 7, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1041),
+                            DislikeCount = 80,
                             GenreId = 3,
                             IsLimitedEdition = true,
-                            LastUpdated = new DateTime(2025, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4256),
-                            PublishedDate = new DateTime(2019, 2, 25, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4255),
+                            LastUpdated = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1042),
+                            LikeCount = 1750,
+                            PublishedDate = new DateTime(2019, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1041),
                             Rating = 9.5999999999999996,
                             SalesCount = 750,
                             StockQuantity = 35
+                        },
+                        new
+                        {
+                            BookId = 4,
+                            Author = "Li Zheng",
+                            BookCover = "https://th.bing.com/th/id/OIP.UdyFxJlC_TWtaYsqGMWwwQHaKc?w=196&h=276&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+                            BookPrice = 10.550000000000001,
+                            BookTitle = "Programming with C++",
+                            DateAdded = new DateTime(2025, 3, 5, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1044),
+                            DislikeCount = 35,
+                            GenreId = 1,
+                            IsLimitedEdition = false,
+                            LastUpdated = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1049),
+                            LikeCount = 500,
+                            PublishedDate = new DateTime(2019, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1048),
+                            Rating = 8.5999999999999996,
+                            SalesCount = 685,
+                            StockQuantity = 135
+                        },
+                        new
+                        {
+                            BookId = 5,
+                            Author = "Karen Kingsbury",
+                            BookCover = "https://th.bing.com/th/id/OIP.fWcVJEURX5e9M-29zpkaZQHaLR?w=196&h=299&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+                            BookPrice = 12.75,
+                            BookTitle = "A novel about true love ",
+                            DateAdded = new DateTime(2025, 3, 5, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1050),
+                            DislikeCount = 20,
+                            GenreId = 4,
+                            IsLimitedEdition = false,
+                            LastUpdated = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1052),
+                            LikeCount = 320,
+                            PublishedDate = new DateTime(2022, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1051),
+                            Rating = 9.0,
+                            SalesCount = 1205,
+                            StockQuantity = 50
                         });
                 });
 
@@ -519,7 +566,7 @@ namespace book_web.Migrations
                             Description = "A club for fans of science fiction books.",
                             JoinInstructions = "Sign up on our website or visit our store.",
                             Location = "Bookstore, Downtown",
-                            MeetingDate = new DateTime(2025, 3, 4, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4338),
+                            MeetingDate = new DateTime(2025, 3, 14, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1142),
                             Name = "Sci-Fi Book Club"
                         },
                         new
@@ -528,7 +575,7 @@ namespace book_web.Migrations
                             Description = "Join our mystery book club for thrilling discussions.",
                             JoinInstructions = "Register at the front desk.",
                             Location = "Library, Main Street",
-                            MeetingDate = new DateTime(2025, 3, 11, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4341),
+                            MeetingDate = new DateTime(2025, 3, 21, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1146),
                             Name = "Mystery Book Club"
                         });
                 });
@@ -568,10 +615,82 @@ namespace book_web.Migrations
                     b.ToTable("BookReviews");
                 });
 
+            modelBuilder.Entity("book_web.Models.BookStatisticViewModel", b =>
+                {
+                    b.Property<string>("Labels")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sales")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Views")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.ToTable("BookStatisticViewModel");
+                });
+
+            modelBuilder.Entity("book_web.Models.BookStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Sales")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Views")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookStatistics");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BookId = 1,
+                            Date = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1296),
+                            Sales = 1200,
+                            Views = 540
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BookId = 3,
+                            Date = new DateTime(2025, 3, 7, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1297),
+                            Sales = 985,
+                            Views = 320
+                        });
+                });
+
             modelBuilder.Entity("book_web.Models.BookViewModel", b =>
                 {
                     b.Property<int>("CurrentPage")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("GenreName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SearchString")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SortOrder")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TotalPages")
                         .HasColumnType("INTEGER");
@@ -715,7 +834,7 @@ namespace book_web.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2025, 3, 7, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4296),
+                            Date = new DateTime(2025, 3, 17, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1107),
                             Description = "Join us for a book signing with Author XYZ.",
                             ImageUrl = "https://th.bing.com/th/id/OIP.bRWnWBnpkJYKbgtPYIIdawHaE5?w=261&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7",
                             Location = "Bookstore, Downtown",
@@ -724,7 +843,7 @@ namespace book_web.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2025, 3, 27, 10, 20, 29, 881, DateTimeKind.Local).AddTicks(4305),
+                            Date = new DateTime(2025, 4, 6, 16, 54, 36, 535, DateTimeKind.Local).AddTicks(1110),
                             Description = "A workshop for aspiring writers.",
                             ImageUrl = "https://th.bing.com/th/id/OIP.wT9mRKIUU-dlHXh0SmCuCwHaGN?w=940&h=788&rs=1&pid=ImgDetMain",
                             Location = "Community Center",
@@ -795,6 +914,11 @@ namespace book_web.Migrations
                         {
                             GenreId = 3,
                             GenreName = "Novel"
+                        },
+                        new
+                        {
+                            GenreId = 4,
+                            GenreName = "Love Story"
                         });
                 });
 
@@ -948,6 +1072,31 @@ namespace book_web.Migrations
                         });
                 });
 
+            modelBuilder.Entity("book_web.Models.UserBookReaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("Liked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserBookReactions");
+                });
+
             modelBuilder.Entity("book_web.Models.UserViewModel", b =>
                 {
                     b.Property<string>("Id")
@@ -1070,6 +1219,17 @@ namespace book_web.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("book_web.Models.BookStatistics", b =>
+                {
+                    b.HasOne("book_web.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("book_web.Models.CartItem", b =>
                 {
                     b.HasOne("book_web.Models.Book", "Book")
@@ -1097,6 +1257,25 @@ namespace book_web.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("book_web.Models.UserBookReaction", b =>
+                {
+                    b.HasOne("book_web.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("book_web.Models.ArticleDetailsViewModel", b =>

@@ -1,0 +1,43 @@
+﻿.link-button {
+    display: inline-block; /* Makes the link behave like a button */
+    padding: 5px 10px;
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    text-decoration: none; /* Removes the underline */
+    border-radius: 5px; /* Rounded corners */
+    /*text-align: center;*/ /* Centers the text inside */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+    .link-button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+        transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+
+    /* Link Active Effect (when clicked) */
+    .link-button:active {
+        background-color: #004085; /* Even darker blue when clicked */
+        transform: scale(0.98); /* Shrink slightly when clicked */
+    }
+
+    /* Optional: Disabled Link/Button Style */
+    .link-button:disabled {
+        background-color: #cccccc; /* Light gray background when disabled */
+        color: #777777; /* Gray text */
+        cursor: not-allowed; /* Disable pointer cursor */
+    }
+
+.bg-danger {
+    display: inline-block; /* Makes the link behave like a button */
+    padding: 5px 10px;
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+   
+    color: white; /* White text */
+    text-decoration: none; /* Removes the underline */
+    border-radius: 5px; /* Rounded corners */
+    /*text-align: center;*/ /* Centers the text inside */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+   

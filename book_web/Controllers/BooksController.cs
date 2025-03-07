@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.SignalR;
 using book_web.Dependency_Injection;
 using PagedList;
 using System.Drawing.Printing;
+using System.IO;
+using System.IO.Compression;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace book_web.Controllers
@@ -29,11 +32,12 @@ namespace book_web.Controllers
         private readonly IBookRespository _bookRespository;
         private readonly IBookService _bookService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
         //private readonly IHubContext<StatisticHub> _hub;
 
         public BooksController(Book_webContext context, IMemoryCache cache, IBookRecommendationService bookRecommendationService
             , IHubContext<IventoryHub> hubContext, IBookRespository bookRespository
-            , IBookService bookService, IWebHostEnvironment webHostEnvironment)//, IHubContext<StatisticHub> hub)
+            , IBookService bookService, IWebHostEnvironment webHostEnvironment,UserManager<IdentityUser> userManager )//, IHubContext<StatisticHub> hub)
         {
             _context = context;
             _cache = cache;
@@ -42,6 +46,8 @@ namespace book_web.Controllers
             _bookRespository = bookRespository;
             _bookService = bookService;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
+
             //_hub = hub;
         }
         //public async Task<IActionResult> UpdateBookStatistic(int bookId, BookStatistics stats)
@@ -258,6 +264,175 @@ namespace book_web.Controllers
             ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
             return View();
         }
+        [HttpPost]
+        [Authorize(Roles ="Reader")]
+        public async Task<IActionResult> LikeBook(int bookId)
+        {
+            //var book = await _context.Book.FindAsync(bookId);
+            //if (book != null)
+            //{
+            //    book.LikeCount += 1;  // Tăng số lượt like
+            //    _context.Update(book);
+            //    await _context.SaveChangesAsync();
+            //}
+            //return RedirectToAction(nameof(Index1));
+            var userId = _userManager.GetUserId(User);  // Get the current user's ID
+            var book = await _context.Book.FindAsync(bookId);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the user has already reacted (liked or disliked) to this book
+            var existingReaction = await _context.UserBookReactions
+                .FirstOrDefaultAsync(ub => ub.UserId == userId && ub.BookId == bookId);
+
+            if (existingReaction != null)
+            {
+                if (existingReaction.Liked == true)
+                {
+                    // If the user already liked the book, return an error or handle it as needed
+                    return BadRequest("You have already liked this book.");
+                }
+                else if (existingReaction.Liked == false)
+                {
+                    // If the user previously disliked, we need to update the reaction to like
+                    existingReaction.Liked = true;
+
+                    // Update the like count for the book
+                    book.LikeCount += 1;
+                    book.DislikeCount -= 1;
+
+                    _context.Update(existingReaction);
+                    _context.Update(book);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index1));
+                }
+            }
+            else
+            {
+                // If the user hasn't reacted yet, create a new like reaction
+                var reaction = new UserBookReaction
+                {
+                    UserId = userId,
+                    BookId = bookId,
+                    Liked = true
+                };
+
+                _context.UserBookReactions.Add(reaction);
+
+                // Increment like count for the book
+                book.LikeCount += 1;
+                _context.Update(book);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index1));
+        }
+
+            // Create a new reaction (like)
+            //var reaction = new UserBookReaction
+            //{
+            //    UserId = userId,
+            //    BookId = bookId,
+            //    Liked = true
+            //};
+
+            //_context.UserBookReactions.Add(reaction);
+            //await _context.SaveChangesAsync();
+
+            //// Increment like count for the book
+            //book.LikeCount += 1;
+            //_context.Update(book);
+            //await _context.SaveChangesAsync();
+
+            //return RedirectToAction(nameof(Index1));  // Redirect back to the list of books
+        //}
+        [HttpPost]
+        [Authorize(Roles ="Reader")]
+        public async Task<IActionResult> DislikeBook(int bookId)
+        {
+            var userId = _userManager.GetUserId(User);  // Get the current user's ID
+            var book = await _context.Book.FindAsync(bookId);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the user has already reacted (liked or disliked) to this book
+            var existingReaction = await _context.UserBookReactions
+                .FirstOrDefaultAsync(ub => ub.UserId == userId && ub.BookId == bookId);
+
+            if (existingReaction != null)
+            {
+                // If the user already liked or disliked, return an error
+                //return BadRequest("You have already reacted to this book.");
+                if (existingReaction.Liked == false)
+                {
+                    // If the user already disliked the book, return an error or handle it as needed
+                    return BadRequest("You have already disliked this book.");
+                }
+                else if (existingReaction.Liked == true)
+                {
+                    // If the user previously liked the book, we need to update the reaction to dislike
+                    existingReaction.Liked = false;
+
+                    // Update the dislike count for the book
+                    book.LikeCount -= 1;
+                    book.DislikeCount += 1;
+
+                    _context.Update(existingReaction);
+                    _context.Update(book);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index1));
+                }
+            }
+            else
+            {
+                var reaction = new UserBookReaction
+                {
+                    UserId = userId,
+                    BookId = bookId,
+                    Liked = false
+                };
+
+                _context.UserBookReactions.Add(reaction);
+                await _context.SaveChangesAsync();
+
+                // Increment dislike count for the book
+                book.DislikeCount += 1;
+                _context.Update(book);
+                await _context.SaveChangesAsync();
+            }
+                
+            return RedirectToAction(nameof(Index1));  // Redirect back to the list of books
+                                                      // Create a new reaction (dislike)
+
+        }
+        [Authorize]
+        public IActionResult DownloadZipFile(int id)
+        {
+            var book = _context.Book.FirstOrDefault(b => b.BookId == id);
+
+            if (book == null || string.IsNullOrEmpty(book.BookCover))
+            {
+                return NotFound();
+            }
+
+            // Check if the file exists at the given path
+            if (System.IO.File.Exists(book.BookCover))
+            {
+                var fileBytes = System.IO.File.ReadAllBytes(book.BookCover);
+                var fileName = Path.GetFileName(book.BookCover);  // Get the zip file name
+                return File(fileBytes, "application/zip", fileName);
+            }
+
+            return NotFound();
+        }
 
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -265,39 +440,71 @@ namespace book_web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public IActionResult Create(Book book, IFormFile image)
+        public async Task<IActionResult> Create(Book book , IFormFile bookFile)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && bookFile != null)
             {
-                // Kiểm tra nếu có ảnh được tải lên
-                if (image != null && image.Length > 0)
+                // Define a folder to save the book file (e.g., ZIP file)
+                var bookFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "books", book.BookTitle);
+
+                // Create the folder if it doesn't exist
+                if (!Directory.Exists(bookFolderPath))
                 {
-                    var fileName = Path.GetFileName(image.FileName);
-                    var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images");  // Lưu ảnh trong thư mục wwwroot/images
-                    var filePath = Path.Combine(uploadPath, fileName);
-
-                    if (!Directory.Exists(uploadPath))
-                    {
-                        Directory.CreateDirectory(uploadPath);
-                    }
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        image.CopyTo(fileStream);
-                    }
-
-                    book.BookCover = "/images/" + fileName;  // Đường dẫn tương đối cho ảnh
+                    Directory.CreateDirectory(bookFolderPath);
                 }
 
-                _context.Book.Add(book);  // Thêm sách mới vào cơ sở dữ liệu
-                _context.SaveChanges();  // Lưu thay đổi
+                // Define the path for the uploaded file (e.g., book.zip)
+                var filePath = Path.Combine(bookFolderPath, $"{book.BookTitle}.zip");
 
-                return RedirectToAction(nameof(Index));  // Quay lại trang index
+                // Save the uploaded book file to the server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await bookFile.CopyToAsync(stream);
+                }
+
+                // Set the FilePath property of the book model to the file path
+                book.BookCover = filePath;
+
+                // Save the book data (including the file path) to the database
+                _context.Book.Add(book);
+                await _context.SaveChangesAsync();
+
+                // Redirect to a different page, e.g., the book details page or listing
+                return RedirectToAction("Details", new { id = book.BookId });
             }
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId", book.GenreId);
-
+            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", book.GenreId);
             return View(book);
         }
+      
+            // Kiểm tra nếu có ảnh được tải lên
+            //if (image != null && image.Length > 0)
+            //{
+            //    var fileName = Path.GetFileName(image.FileName);
+            //    var uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "images");  // Lưu ảnh trong thư mục wwwroot/images
+            //    var filePath = Path.Combine(uploadPath, fileName);
+
+            //    if (!Directory.Exists(uploadPath))
+            //    {
+            //        Directory.CreateDirectory(uploadPath);
+            //    }
+
+            //    using (var fileStream = new FileStream(filePath, FileMode.Create))
+            //    {
+            //        image.CopyTo(fileStream);
+            //    }
+
+            //    book.BookCover = "/images/" + fileName;  // Đường dẫn tương đối cho ảnh
+            //}
+
+            //_context.Book.Add(book);  // Thêm sách mới vào cơ sở dữ liệu
+            //_context.SaveChanges();  // Lưu thay đổi
+
+            //return RedirectToAction(nameof(Index));  // Quay lại trang index
+            //}
+            //ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId", book.GenreId);
+
+            //return View(book);
+        //}
         // Nếu có lỗi, hiển thị lại form
                                 //public async Task<IActionResult> Create([Bind("BookId,BookTitle,BookPrice,BookCover,Author,Rating,SalesCount" +
                                 //    ",StockQuantity,GenreId,DateAdded,IsLimitedEdition,PublishedDate,LastUpdated")] Book book,IFormFile BookCover)

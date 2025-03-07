@@ -67,6 +67,9 @@
            <th>Is Limited Edition </th>
             <th>Published Date </th>
             <th>Last Updated </th>
+            
+            <th>Likes Count </th>
+            <th>DisLikes Count</th>
             <th>Action </th>
         </tr>
     </thead>
@@ -116,6 +119,11 @@
                 <th>
                     @Html.DisplayFor(modelItem => item.LastUpdated)
                 </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.LikeCount)
+                </th>
+                <th> @Html.DisplayFor(modelItem => item.DislikeCount)</th>
+
             <td>
                 <a class="btn btn-warning"asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
                 <a class="btn btn-info"asp-action="Details" asp-route-id="@item.BookId">Details</a> |
@@ -130,7 +138,7 @@
                     </div>
                     
             </td>
-           
+              
         </tr>
 }
     </tbody>
