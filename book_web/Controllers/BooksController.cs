@@ -70,6 +70,7 @@ namespace book_web.Controllers
 
         //    return RedirectToAction("Details", new { id = bookId });
         //}
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> RecentBooks()
         {
             const string cacheKey = "recentBooks";
@@ -88,7 +89,81 @@ namespace book_web.Controllers
             return View(recentBooks);
         }
         // GET: Books
-        [Authorize]
+        [Authorize(Roles ="Reader")]
+        // a index view for display a book in user layout page when they have successfull login 
+        public async Task<IActionResult> Index1(int page=1, string sortOrder="desc",string searchString = "",string genreName="")
+        {
+            int pageSize = 10; // define number of books display in each pages 
+
+            var totalBooks = await _context.Book.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalBooks / pageSize);
+
+            // Get book list and perform search function
+            IQueryable<Book> booksQuery = _context.Book.Include(b => b.Genre);
+
+            //var booksWithGenres = _context.Book
+            //.Join(_context.Genre,
+            // b => b.GenreId,
+            //g => g.GenreId,
+            //(b, g) => new { Book = b, Genre = g }).ToList();
+
+            // Check if have any search results 
+            // Search by exactly keyword 
+            if (!string.IsNullOrEmpty(genreName))
+            {
+                booksQuery = booksQuery.Where(b => b.Genre.GenreName == genreName); // Filter by genre name
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //
+                //var filteredBooks = booksWithGenres
+                //.Where(ti => ti.Book.BookTitle.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                //  ti.Genre.GenreName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                //.ToList();
+
+                booksQuery = booksQuery.Where(b =>
+                 b.BookTitle.Contains(searchString) ||
+                // //, StringComparison.OrdinalIgnoreCase) || // Search by book title
+                 b.Genre.GenreName.Contains(searchString)
+                //,
+                //StringComparison.OrdinalIgnoreCase) // search by genre 
+                );
+            }
+
+            // Sắp xếp theo giá
+            if (sortOrder == "asc")
+            {
+                booksQuery = booksQuery.OrderBy(b => b.BookPrice); // Sort price by ascending
+            }
+            else
+            {
+                booksQuery = booksQuery.OrderByDescending(b => b.BookPrice); // sort price by descending 
+            }
+
+            var books = await booksQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var genres = await _context.Genre.ToListAsync();
+            var viewModel = new BookViewModel
+            {
+                Book = books,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                SortOrder = sortOrder,
+                SearchString = searchString, // return a searchString value 
+                  GenreName = genreName,
+                  Genre= genres
+               
+            };
+
+
+
+            return View(viewModel);
+
+        }
+        
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index(int page = 1, string sortOrder="desc" , string searchString="" )
         {
             int pageSize = 10; // define number of books display in each pages 
@@ -107,6 +182,7 @@ namespace book_web.Controllers
 
             // Check if have any search results 
             // Search by exactly keyword 
+   
             if (!string.IsNullOrEmpty(searchString))
             {
                 //

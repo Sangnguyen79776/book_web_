@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/book_web.styles.css" asp-append-version="true" />
     <style>
         li{
-            padding:10px;
+        padding:10px;
         }
     </style>
 </head>
@@ -19,11 +19,14 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">book_web</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -52,33 +55,51 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="BookStatistics" asp-action="Index1">Book Statistics</a>
-                            
+                         </li>   
                            
 
                        
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "Cart")">
-                                Cart <span id="cart-count">(@Context.Session.GetInt32("CartItemCount") ?? 0)</span>
-                            </a>
-
-                        </li>
+                     
                         <li class="nav-item">
                            
-                               @if(User.IsInRole("Admin"))
-                              {
+                             
                                 <a class="nav-link" href="@Url.Action("Index", "Discount")">Discounts</a>
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ActivityLogs">ActivityLogs Page</a>
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">List Of User Page</a>
-                              }
+                             
                    
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CustomerService" asp-action="FAQs">FAQ</a>
-                             <a class="nav-link text-dark" asp-area="" asp-controller="CustomerService" asp-action="Contact">Contact Us</a>
-                        </li>
-                       
+                        
+                        
+                        
+                        
+                        }
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Reader")){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index1">Book Page </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="History">History</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="Team">Team</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CustomerService" asp-action="FAQs">FAQ</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CustomerService" asp-action="Contact">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Cart")">
+                                    Cart <span id="cart-count">(@Context.Session.GetInt32("CartItemCount") ?? 0)</span>
+                                </a>
+
+                            </li>
+                           
+                        }
+                        
+                            
                         <partial name="_LoginPartial" />
+                       
                     </ul>
+                    
                 </div>
             </div>
         </nav>
@@ -116,9 +137,7 @@
                 });
         }
     </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+ 
     <script src="~/js/signalr/dist/browser/signalr.js" ></script>
     
 

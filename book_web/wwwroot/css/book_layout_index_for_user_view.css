@@ -1,0 +1,116 @@
+﻿.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Split each items into 3 colums at grid  */
+    gap: 20px; /* Define a gap between each grid-columns */
+}
+
+.grid-item ul li {
+   
+    font-family: 'Roboto', sans-serif; /* Font cho các mục trong danh sách */
+    font-size: 14px; /* Kích thước chữ vừa phải */
+    margin-bottom: 8px; /* Khoảng cách giữa các mục */
+}
+
+.grid-item {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .grid-item img {
+        width: 100%;
+        height: auto;
+    }
+
+    .grid-item ul {
+        list-style-type: none; /* Delete a bullets */
+        padding: 0; /* Delete a default padding in <ul> */
+    }
+
+.book-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Place the elements at 2 spaces left and right */
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Font cho nội dung chính */
+    line-height: 1.6; /* Tăng độ cao dòng để dễ đọc hơn */
+    color: #333; /* Màu chữ tối cho dễ đọc */
+}
+
+h3 {
+    font-family: 'Lora', serif; /* Font cho tiêu đề */
+    font-weight: 700; /* Đậm cho tiêu đề */
+    color: #333; /* Màu chữ tối cho tiêu đề */
+}
+
+/* Chỉnh sửa nút "Add to Cart" */
+.btn btn-outline-secondary {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif; /* Font cho nút */
+    font-weight: 500; /* Độ đậm vừa phải cho nút */
+   
+}
+
+    .btn btn-outline-secondary:hover {
+        background-color: #45a049;
+    
+    }
+
+.vertical-navbar {
+    width: 250px; /* Fixed width for the navbar */
+    background: linear-gradient(to bottom, #f44336, #ff9800); /* Red to Orange */
+
+
+    height: 100vh; /* Full height */
+    position: sticky; /* Keeps navbar fixed during scroll */
+    top: 0;
+    padding-top: 20px; /* Add space at the top */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .vertical-navbar ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .vertical-navbar li {
+        margin: 10px 0;
+        list-style-type: none;
+    }
+
+    .vertical-navbar a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px 20px;
+        display: block;
+        width: 100%;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .vertical-navbar a:hover {
+            background-color: #575757;
+        }
+
+        .vertical-navbar a.active {
+            background-color: #4CAF50; /* Highlight active genre */
+        }
+.book-grid {
+    flex: 1; /* Take remaining space */
+    padding-left: 20px; /* Space between navbar and content */
+}
+.main-container {
+    display: flex;
+    margin: 0 20px; /* Add some margin around the container */
+}
+

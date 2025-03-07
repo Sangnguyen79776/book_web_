@@ -40,7 +40,7 @@
             <th colspan="4">
              
                 <form method="get" asp-action="Index">
-                    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Search by Title or Genre" />
+                    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Search book by Title or Genre" />
                     <button type="submit">Search</button>
                 </form>
             </th>
@@ -120,7 +120,7 @@
                 <a class="btn btn-warning"asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
                 <a class="btn btn-info"asp-action="Details" asp-route-id="@item.BookId">Details</a> |
                 <a class="btn btn-danger"asp-action="Delete" asp-route-id="@item.BookId">Delete</a>|
-                    <a class="btn btn-outline-secondary" href="@Url.Action("AddBookToCart", "Cart", new { bookId = @item.BookId, quantity = 1 })">Add to Cart</a>
+                    @* <a class="btn btn-outline-secondary" href="@Url.Action("AddBookToCart", "Cart", new { bookId = @item.BookId, quantity = 1 })">Add to Cart</a> *@
                     <div>
                         <form method="post" asp-action="UpdateStock">
                             <input type="hidden" name="bookId" value="@item.BookId" />

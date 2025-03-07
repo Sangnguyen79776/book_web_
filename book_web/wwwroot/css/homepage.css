@@ -1,0 +1,20 @@
+﻿.image-container {
+    position: relative; /* Đặt vị trí của container làm relative */
+    width: 100%; /* Đảm bảo container chiếm toàn bộ chiều rộng của phần chứa */
+}
+
+    .image-container img {
+        width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của container */
+        height: auto; /* Giữ tỷ lệ của hình ảnh */
+    }
+
+.text-overlay {
+    position: absolute; /* Đặt vị trí tuyệt đối cho chữ */
+    top: 50%; /* Đưa chữ vào giữa theo chiều dọc */
+    left: 50%; /* Đưa chữ vào giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Điều chỉnh vị trí để chữ hoàn toàn nằm giữa */
+    color: white; /* Màu chữ */
+    font-size: 2rem; /* Kích thước chữ */
+    font-weight: bold; /* Làm cho chữ in đậm */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Thêm hiệu ứng đổ bóng cho chữ để nổi bật hơn */
+}

@@ -11,5 +11,7 @@ namespace book_web.Models
         public int TotalPages { get; set; }
         public string SortOrder { get; set; } // Để lưu thứ tự sắp xếp
         public string SearchString { get; set; }
+        public string GenreName { get; set; }
+        public List<Genre> Genre {  get; set; }
     }
 }

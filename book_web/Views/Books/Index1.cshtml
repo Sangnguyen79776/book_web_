@@ -1,0 +1,117 @@
+﻿@model book_web.Models.BookViewModel
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - book_web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/book_web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/book_layout_index_for_user_view.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+
+    <ul>
+        
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-action="Recommendations">Get some recommendation books  </a>
+        </li>
+
+
+    </ul>
+
+
+</>
+<h1>Book List</h1>
+<form method="get" action="@Url.Action("Index1", "Books")">
+    <input type="text" name="searchString" value="@Model.SearchString" placeholder="Search by Title or Genre" />
+    <button type="submit">Search</button>
+    </form>
+<a  class="btn-outline-secondary"href="@Url.Action("Index1", "Books", new { sortOrder = Model.SortOrder == "asc" ? "desc" : "asc" })">
+    Sort by Price (@(Model.SortOrder == "asc" ? "Descending" : "Ascending"))
+</a>
+@* <form method="get" action="@Url.Action("Index1", "Books")"> *@
+@*     <label for="genreName">Select Genre:</label> *@
+
+@*         <select asp-for="GenreName" asp-items="@(new SelectList(Model.Genre, "GenreName", "GenreName"))">  *@
+@*        <option value="">All Genres</option>  *@
+@*      </select> *@
+<div class="main-container">
+    <nav>
+    <ul class="vertical-navbar">
+            <li><a href="@Url.Action("Index1", "Books", new { genreName = "" })">All Genres</a></li>
+            @foreach (var genre in Model.Genre)
+            {
+                <li><a href="@Url.Action("Index1", "Books", new { genreName = genre.GenreName })">@genre.GenreName</a></li>
+            }
+        </ul>
+    </nav>
+    @* <button type="submit">Filter</button> *@
+@* </form> *@
+   
+
+<div class="book-grid">
+<div class="grid-container">
+    @foreach (var i in Model.Book)
+    {
+        <div class="grid-item">
+            <div class="book-header">
+               
+                <h3>
+                    Book Title: @Html.DisplayFor(modelItem => i.BookTitle)</h3>
+                <a class="btn btn-outline-secondary" href="@Url.Action("AddBookToCart", "Cart", new { bookId = @i.BookId, quantity = 1 })">Add to Cart</a>
+            </div>
+            <p>Book Information</p>
+            <ul>
+                <li>Book Price: @Html.DisplayFor(modelItem => i.BookPrice)</li>
+                <li>Image: <img src="@Html.DisplayFor(modelItem => i.BookCover)" width="100" height="200" /></li>
+                <li>Author: @Html.DisplayFor(modelItem => i.Author)</li>
+                <li>Rating: @Html.DisplayFor(modelItem => i.Rating)</li>
+                @* <li>Sales Count: @Html.DisplayFor(modelItem => i.SalesCount)</li> *@
+                @* <li>Stock Quantity: @Html.DisplayFor(modelItem => i.StockQuantity)</li> *@
+                @* <li>Genre Name: @Html.DisplayFor(modelItem => i.Genre.GenreName)</li> *@
+                @* <li>Date Added: @Html.DisplayFor(modelItem => i.DateAdded)</li> *@
+                @* <li>Is Limited Edition: @Html.DisplayFor(modelItem => i.IsLimitedEdition)</li> *@
+                @* <li>Published Date: @Html.DisplayFor(modelItem => i.PublishedDate)</li> *@
+                @* <li>Last Updated: @Html.DisplayFor(modelItem => i.LastUpdated)</li> *@
+           
+                <li>More details for books:<a class="btn btn-info" asp-action="Details" asp-route-id="@i.BookId">Read More</a></li>
+            </ul>
+        </div>
+    }
+</div>
+    </div>
+</div>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", "Books", new { page = Model.CurrentPage - 1 ,sortOrder = Model.SortOrder,
+                    searchString = Model.SearchString,genreName = Model.GenreName   })">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Books", new { page = i,sortOrder = Model.SortOrder
+                    , searchString = Model.SearchString,genreName = Model.GenreName  })">@i</a>
+            </li>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Books", new { page = Model.CurrentPage + 1 ,sortOrder = Model.SortOrder,
+                    searchString = Model.SearchString ,genreName = Model.GenreName })">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
+

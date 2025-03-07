@@ -1,0 +1,66 @@
+﻿.book-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Chia thành 2 cột đều */
+    gap: 30px; /* Tăng khoảng cách giữa các item */
+}
+
+    .book-details img {
+        width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng cột */
+        height: auto; /* Giữ tỷ lệ của hình ảnh */
+        max-width: 400px; /* Giới hạn chiều rộng của hình ảnh */
+    }
+
+.book-info {
+    display: block;
+    flex-direction: column;
+    gap: 10px; /* Khoảng cách giữa các phần tử thông tin */
+    line-height: 1.6; /* Tăng chiều cao dòng để dễ đọc */
+    color: #333; /* Màu chữ */
+}
+    .book-info p {
+        margin: 0 0 10px 0; /* Loại bỏ margin mặc định và thêm một chút khoảng cách dưới mỗi đoạn văn */
+    }
+
+    .book-info span {
+        display: inline; /* Hiển thị các phần tử con như inline để chúng nằm trong cùng một dòng nếu cần */
+    }
+
+
+
+.btn btn-outline-secondary:hover {
+    background-color: #0056b3;
+    ;
+}
+.book-info h2 {
+    font-size: 2rem; /* Tăng kích thước chữ cho tiêu đề sách */
+    font-weight: bold; /* Đặt chữ in đậm */
+    margin-bottom: 20px; /* Thêm khoảng cách dưới tiêu đề */
+    color: #333; /* Màu chữ tiêu đề */
+}
+
+/* Styling cho nút Add to Cart */
+.btn-outline-secondary {
+    background-color: #007bff; /* Màu nền xanh */
+    color: white; /* Màu chữ trắng */
+    padding: 10px 20px; /* Khoảng cách bên trong nút */
+    border: none; /* Loại bỏ viền mặc định */
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Hiển thị con trỏ chuột khi hover vào */
+    font-size: 16px; /* Kích thước chữ */
+    margin-top: 20px; /* Khoảng cách phía trên nút */
+    width: 100%; /* Đảm bảo nút chiếm toàn bộ chiều rộng của cột */
+}
+.book-info strong {
+    font-weight: normal; /* Đặt lại font-weight về bình thường (không in đậm) */
+}
+.btn-link {
+    text-decoration: none;
+
+    color: black; /* Màu chữ trắng */
+    padding: 5px 10px; /* Khoảng cách bên trong nút */
+    border-radius: 5px; /* Bo góc */
+    cursor: pointer; /* Hiển thị con trỏ chuột khi hover vào */
+    font-size: 16px; /* Kích thước chữ */
+    margin-top: 10px; /* Khoảng cách phía trên nút */
+    width:200px;
+}

@@ -3,13 +3,18 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+<head>
+    <link rel="stylesheet" href="~/css/book_details_view_for_user.css" />
+</head>
+<h1>Book Details</h1>
 
 <div>
     <h4>Book</h4>
     <hr />
     <dl class="row">
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BookTitle)
         </dt>
@@ -82,9 +87,62 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastUpdated)
         </dd>
+        <div>
+                <a asp-action="Edit" asp-route-id="@Model?.BookId">Edit|</a>
+
+                <a asp-action="Index"> Back to List</a>
+        </div>
+      
+        }
+        else
+        {
+            <a class="btn-link"asp-action="Index1"> Back to List</a>
+            <div class="book-details">
+                <div class="book-image">
+                    <img src=" @Html.DisplayFor(model => model.BookCover)" alt="Book Image">
+                </div>
+                <div class="book-info">
+                    <h2>
+                        <strong>
+                            @Html.DisplayFor(model => model.BookTitle) 
+                            
+                        </strong>
+
+                    </h2>
+                    <p><strong> @Html.DisplayFor(model => model.BookPrice)$ </strong></p>
+                    <p><strong>Written by @Html.DisplayFor(model => model.Author)</strong></p>
+                    <p><strong> A @Html.DisplayFor(model => model.BookTitle) is rate by @Html.DisplayFor(model => model.Rating)</strong></p>
+                    <p><strong>We extremly recommend for customer who have demand to enhance their knowledge and have bought with @Html.DisplayFor(model => model.SalesCount) sales count 
+                            . We still remain for stock quantity of our main store with @Html.DisplayFor(model => model.StockQuantity)
+                        </strong>
+
+                    </p>
+                    <p><strong>This book belong to @Html.DisplayFor(model => model.Genre.GenreName) genre , which have been added to our website at @Html.DisplayFor(model => model.DateAdded)
+                            . And have been publised at @Html.DisplayFor(model => model.PublishedDate) , it limited edition is @Html.DisplayFor(model => model.IsLimitedEdition)
+                    
+                    
+                    </strong></p>
+                    @* <h2>Book Title:  @Html.DisplayNameFor(model => model.BookTitle)</h2> *@
+                    @* <p>Book Price:   @Html.DisplayNameFor(model => model.BookPrice)</p> *@
+                    @* <p>Author:@Html.DisplayFor(model => model.Author)</p> *@
+                    @* <p>Rating:@Html.DisplayFor(model => model.Rating)</p> *@
+                    @* <p>Sales Count:@Html.DisplayFor(model => model.SalesCount)</p> *@
+                    @* <p>Stock Quantity: @Html.DisplayFor(model => model.StockQuantity)</p> *@
+                    @* <p>Book Genre:@Html.DisplayFor(model => model.Genre.GenreName)</p> *@
+                    @* <p>Date Added:@Html.DisplayFor(model => model.DateAdded)</p> *@
+                    @* <p>Is Limited Edition:@Html.DisplayFor(model => model.IsLimitedEdition)</p> *@
+
+                    <a class="btn btn-outline-secondary" href="@Url.Action("AddBookToCart", "Cart", new { bookId = Model.BookId, quantity = 1 })">Add to Cart</a>
+
+
+                </div>
+            </div>
+          
+        }
     </dl>
+       
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BookId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+  
+    
+
